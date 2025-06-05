@@ -22,20 +22,24 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: "gpt-4",
         messages: [
-          { role: "user", content: text }
+          {
+            role: "user",
+            content: text
+          }
         ],
       }),
     });
 
-    const data = await response.json();
-    console.log("OpenAI 回傳資料：", JSON.stringify(data, null, 2));
-  
-    const result = data?.choices?.[0]?.message?.content?.trim() || "(No response)";
+    const resultData = await response.json();
 
+    // ✅ 印出完整 API 回傳內容（你可以到 Vercel Logs 查看）
+    console.log("🔍 OpenAI 回傳結果：", JSON.stringify(resultData, null, 2));
+
+    const result = resultData?.choices?.[0]?.message?.content?.trim() || "(No response)";
     return res.status(200).json({ result });
 
   } catch (err) {
-    console.error("Chat API error:", err);
+    console.error("❌ Chat API 錯誤：", err);
     return res.status(500).json({ error: "Internal server error" });
   }
 }
