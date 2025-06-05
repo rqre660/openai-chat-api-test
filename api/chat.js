@@ -28,7 +28,10 @@ export default async function handler(req, res) {
     });
 
     const data = await response.json();
+    console.log("OpenAI 回傳資料：", JSON.stringify(data, null, 2));
+  
     const result = data?.choices?.[0]?.message?.content?.trim() || "(No response)";
+
     return res.status(200).json({ result });
 
   } catch (err) {
